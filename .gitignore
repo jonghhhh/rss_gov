@@ -1,0 +1,32 @@
+# 비밀키 — 절대 커밋 금지
+.env
+.env.*
+*.env
+
+# 수집 데이터(로컬 전용)
+gov_news.db
+*.db
+*.sqlite
+*.sqlite3
+*.csv
+files/
+corpus/
+
+# 파이썬
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+.vscode/
+.idea/
+
+# WSL Zone.Identifier 마커
+*Zone.Identifier
