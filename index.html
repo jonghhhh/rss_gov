@@ -170,6 +170,36 @@
     user-select: none;
   }
   .help { color: var(--muted); font-size: 11px; }
+
+  .guide {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 14px;
+  }
+  .guide .ghead { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .guide .ghead h2 { font-size: 16px; margin: 0; font-weight: 700; }
+  .guide .gsub { color: var(--muted); font-size: 12.5px; margin: 0 0 12px; }
+  .guide ol { list-style: none; counter-reset: step; margin: 0; padding: 0; }
+  .guide li {
+    counter-increment: step; position: relative; padding: 10px 0 10px 42px;
+    border-top: 1px solid var(--border);
+  }
+  .guide li:first-child { border-top: none; }
+  .guide li::before {
+    content: counter(step); position: absolute; left: 0; top: 10px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .guide li b { color: var(--text); }
+  .guide li .desc { color: var(--muted); font-size: 13px; margin-top: 3px; }
+  .guide .kbd {
+    background: var(--chip); border: 1px solid var(--border); border-radius: 5px;
+    padding: 1px 6px; font-size: 12px; color: var(--text); font-weight: 600;
+  }
+  .guide .tip {
+    margin-top: 12px; padding: 9px 11px; background: var(--accent-soft);
+    border: 1px solid #2c3c5c; border-radius: 8px; color: #cfe0ff; font-size: 12.5px;
+  }
   .empty { color: var(--muted); text-align: center; padding: 60px 20px; }
   .errors { color: var(--err); font-size: 12px; margin-bottom: 10px; }
   .spin {
@@ -204,6 +234,7 @@
     </select>
     <span class="hint" title="켜두면 설정한 주기마다 자동으로 다시 수집합니다(직접 버튼 안 눌러도 됨). 새 기사에는 NEW 배지 표시.">?</span>
   </label>
+  <button class="btn ghost" id="helpBtn">ⓘ 사용법</button>
   <button class="btn" id="runBtn">🔄 수집</button>
 </header>
 
@@ -252,6 +283,46 @@
       <span class="step">④ 결과 내 빠른 검색으로 좁히기</span><span class="arrow">→</span>
       <span class="step">⑤ 카드 클릭 → 본문·첨부 URL 펼치기</span>
     </div>
+
+    <div class="guide" id="guide">
+      <div class="ghead">
+        <h2>📋 처음이신가요? 이렇게 쓰세요</h2>
+      </div>
+      <p class="gsub">정부 각 부처의 보도자료를 한 화면에 실시간으로 모아 봅니다. 설치·로그인 없이 바로 사용하세요.</p>
+      <ol>
+        <li>
+          <b>왼쪽에서 부처·주제를 고릅니다.</b>
+          <div class="desc">왼쪽 목록에서 보고 싶은 <b>부처를 클릭해 체크</b>합니다. 여러 개를 동시에 선택할 수 있어요.
+          <br/>· <b>주제 버튼</b>(사회·경제·문화·외교안보·행정일반)을 누르면 그 분야 부처들이 한꺼번에 선택됩니다.
+          <br/>· 맨 위 <span class="kbd">전체 선택</span>으로 모든 부처를, <span class="kbd">전체 해제</span>로 초기화할 수 있습니다.
+          <br/>· 기본으로 <b>‘보도자료(전부처통합)’</b> 하나가 선택돼 있습니다 — <b>이것만으로도 전 부처 보도자료를 가장 빠르게</b> 볼 수 있어요.</div>
+        </li>
+        <li>
+          <b>위쪽 <span class="kbd">🔄 수집</span> 버튼을 누릅니다.</b>
+          <div class="desc">선택한 부처의 <b>최신 보도자료를 지금 한 번</b> 받아옵니다. 결과는 게시 시각 최신순으로 모여 표시됩니다.
+          (여러 부처를 한꺼번에 받으면 몇 초 걸릴 수 있어요.)</div>
+        </li>
+        <li>
+          <b>(원하면) 자동 새로고침을 켭니다.</b>
+          <div class="desc">오른쪽 위 <b>‘자동 새로고침’</b>을 체크하면 <b>설정 주기(예: 5분)마다 알아서 다시 받아옵니다.</b>
+          직접 버튼을 누르지 않아도 됩니다. 새로 들어온 기사에는 <span class="kbd">NEW</span> 배지가 붙습니다.</div>
+        </li>
+        <li>
+          <b>‘결과 내 빠른 검색’으로 좁혀 봅니다.</b>
+          <div class="desc">받아온 목록에서 <b>단어를 입력하면 즉시</b> 제목·본문·부처명에 그 말이 든 기사만 남습니다(예: <b>반도체</b>).
+          <b>새로 받지 않고 화면만</b> 추립니다. 지우면 전체가 다시 보여요.
+          <br/>※ 더 오래된 글까지 받기 싫으면 왼쪽 <b>‘표시 기간’</b>(기본 최근 1개월)을 1주·3일로 바꾸세요.</div>
+        </li>
+        <li>
+          <b>기사 카드를 클릭해 본문·첨부를 펼칩니다.</b>
+          <div class="desc">카드의 제목이나 <span class="kbd">▾ 본문 전체 / 첨부 보기</span>를 누르면 <b>본문 전문</b>과
+          <b>첨부파일(hwpx·pdf) 다운로드 URL</b>이 펼쳐집니다. <span class="kbd">원문 페이지 ↗</span>로 korea.kr 원문도 열 수 있어요.</div>
+        </li>
+      </ol>
+      <div class="tip">💡 <b>가장 빠른 사용법</b>: 아무것도 바꾸지 말고 그냥 <b>🔄 수집</b>만 누르세요. 기본값(보도자료 통합·최근 1개월)으로 전 부처 최신 보도자료가 바로 모입니다.
+      이 안내는 위 <b>ⓘ 사용법</b> 버튼으로 언제든 다시 열고 닫을 수 있습니다.</div>
+    </div>
+
     <div class="toolbar">
       <span class="stat">선택 피드 <b id="selCount">0</b></span>
       <span class="stat">표시 <b id="shownCount">0</b>건</span>
@@ -266,8 +337,7 @@
     <div class="progress" id="progressWrap" style="display:none;"><div id="progressBar"></div></div>
     <div class="errors" id="errors"></div>
     <div id="results">
-      <div class="empty">좌측에서 부처/주제를 선택하고 <b>수집</b>을 누르세요.<br/>
-        여러 부처를 동시에 선택할 수 있고, 주제별·전체 선택도 가능합니다.</div>
+      <div class="empty">위 안내대로 <b>부처/주제를 고르고 🔄 수집</b>을 누르면 여기에 보도자료가 모입니다.</div>
     </div>
   </main>
 </div>
@@ -372,8 +442,11 @@ const PROXIES = [
   (u) => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`, // JSON 래핑(contents)
   (u) => `https://thingproxy.freeboard.io/fetch/${u}`,
 ];
-const PROXY_RETRY = 2;       // 프록시별 재시도 횟수
+const FETCH_TIMEOUT = 9000;  // 요청별 타임아웃(ms) — 느린/멈춘 프록시를 빨리 포기하고 다음으로
+const PROXY_ROUNDS = 2;      // 전체 프록시 목록을 도는 횟수(라운드로빈 재시도)
+const CACHE_TTL = 50000;     // 세션 캐시 유효시간(ms) — 자동 새로고침 최소 주기(60초)보다 짧게
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const _cache = new Map();    // url -> { text, t }
 
 /* ──────────────────────────────────────────────────────────────
    2. UI 구성
@@ -438,26 +511,41 @@ $("#selNone").onclick = () => { selectedFeeds.clear(); syncChecks(); };
 /* ──────────────────────────────────────────────────────────────
    3. 수집 로직
    ────────────────────────────────────────────────────────────── */
-/* validate: 받은 텍스트가 유효한지 검사하는 함수(프록시 에러/랜딩페이지 차단용) */
+/* 단일 프록시 1회 시도(타임아웃 포함). validate 실패 시 throw. */
+async function fetchOnce(target, isGet, validate) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT);
+  try {
+    const res = await fetch(target, { headers: { "Accept": "*/*" }, signal: ctrl.signal });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    let text = await res.text();
+    if (isGet) { try { text = JSON.parse(text).contents || ""; } catch (_) {} }
+    if (!text || text.length < 50) throw new Error("빈 응답");
+    if (validate && !validate(text)) throw new Error("무효 응답(프록시 차단 추정)");
+    return text;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/* 프록시 라운드로빈 페일오버 + 세션 캐시.
+   각 프록시를 '한 번씩' 빠르게 시도하고(타임아웃으로 빨리 포기), 한 바퀴 다 실패하면 다음 라운드.
+   → 느린 프록시 하나에 오래 묶이지 않고 가장 빠른 응답을 잡는다. */
 async function fetchViaProxy(url, validate) {
+  const hit = _cache.get(url);
+  if (hit && Date.now() - hit.t < CACHE_TTL) return hit.text;
   let lastErr;
-  for (const wrap of PROXIES) {
-    const target = wrap(url);
-    const isGet = target.includes("/get?url="); // allorigins JSON 래핑
-    for (let attempt = 0; attempt <= PROXY_RETRY; attempt++) {
+  for (let round = 0; round < PROXY_ROUNDS; round++) {
+    for (const wrap of PROXIES) {
+      const target = wrap(url);
+      const isGet = target.includes("/get?url=");
       try {
-        const res = await fetch(target, { headers: { "Accept": "*/*" } });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        let text = await res.text();
-        if (isGet) { try { text = JSON.parse(text).contents || ""; } catch (_) {} }
-        if (!text || text.length < 50) throw new Error("빈 응답");
-        if (validate && !validate(text)) throw new Error("무효 응답(프록시 차단 추정)");
+        const text = await fetchOnce(target, isGet, validate);
+        _cache.set(url, { text, t: Date.now() });
         return text;
-      } catch (e) {
-        lastErr = e;
-        if (attempt < PROXY_RETRY) await sleep(400 * (attempt + 1));
-      }
+      } catch (e) { lastErr = e; }
     }
+    if (round < PROXY_ROUNDS - 1) await sleep(300);
   }
   throw lastErr || new Error("프록시 실패");
 }
@@ -523,8 +611,8 @@ async function collect() {
   const all = [];
   let done = 0;
 
-  // 동시성 제한 풀
-  const CONCURRENCY = 6;
+  // 동시성 제한 풀(여러 피드를 병렬로 받되 프록시 과부하는 피함)
+  const CONCURRENCY = 8;
   let idx = 0;
   async function worker() {
     while (idx < feeds.length) {
@@ -684,6 +772,10 @@ async function loadAttachments(it, card) {
    5. 이벤트 / 자동 새로고침
    ────────────────────────────────────────────────────────────── */
 $("#runBtn").onclick = collect;
+$("#helpBtn").onclick = () => {
+  const g = $("#guide");
+  g.style.display = (g.style.display === "none") ? "" : "none";
+};
 $("#quickFilter").oninput = () => renderItems(lastItems);
 $("#period").onchange = () => renderItems(lastItems);
 
