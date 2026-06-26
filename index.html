@@ -209,6 +209,18 @@
       <label>제외 키워드(선택)</label>
       <input type="text" id="exclude" placeholder="예: 인사, 동정" />
     </div>
+    <div class="field">
+      <label>표시 기간(받은 뒤 최근 것만 필터)</label>
+      <select id="period">
+        <option value="1">최근 1일</option>
+        <option value="3">최근 3일</option>
+        <option value="7">최근 1주일</option>
+        <option value="30" selected>최근 1개월</option>
+        <option value="0">전체</option>
+      </select>
+      <div class="muted" style="font-size:11px;margin-top:4px;">
+        ＊ RSS는 날짜 지정 수신이 불가해 전체를 받은 뒤 화면에서 거릅니다.</div>
+    </div>
 
     <div id="feedGroups"></div>
   </aside>
@@ -549,8 +561,15 @@ function fmtTime(it) {
 }
 
 function renderItems(items) {
+  // 기간 필터(최근 N일) — RSS는 서버측 날짜 지정이 불가하므로 수신 후 클라이언트에서 거른다
+  const days = parseInt($("#period").value, 10);
+  let shown = items;
+  if (days > 0) {
+    const cutoff = Date.now() - days * 86400000;
+    shown = shown.filter((it) => !it.pubMs || it.pubMs >= cutoff);
+  }
   const q = $("#quickFilter").value.trim();
-  const shown = q ? items.filter((it) => (it.title + it.full + it.dept).includes(q)) : items;
+  if (q) shown = shown.filter((it) => (it.title + it.full + it.dept).includes(q));
   $("#shownCount").textContent = shown.length;
   const box = $("#results");
   if (shown.length === 0) {
@@ -637,6 +656,7 @@ async function loadAttachments(it, card) {
    ────────────────────────────────────────────────────────────── */
 $("#runBtn").onclick = collect;
 $("#quickFilter").oninput = () => renderItems(lastItems);
+$("#period").onchange = () => renderItems(lastItems);
 
 let autoTimer = null;
 function setupAuto() {
