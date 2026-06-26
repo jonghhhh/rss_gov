@@ -154,6 +154,22 @@
   .att .fname { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .att .url { color: var(--muted); font-size: 11px; }
 
+  .flowbar {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 9px;
+    padding: 9px 12px; margin-bottom: 12px; font-size: 12.5px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center;
+  }
+  .flowbar .step {
+    background: var(--panel-2); padding: 3px 9px; border-radius: 6px; color: var(--text); font-weight: 600;
+  }
+  .flowbar .arrow { color: var(--accent); font-weight: 700; }
+  .hint {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 15px; height: 15px; border-radius: 50%; border: 1px solid var(--accent);
+    color: var(--accent); font-size: 10px; font-weight: 800; cursor: help; margin-left: 2px;
+    user-select: none;
+  }
+  .help { color: var(--muted); font-size: 11px; }
   .empty { color: var(--muted); text-align: center; padding: 60px 20px; }
   .errors { color: var(--err); font-size: 12px; margin-bottom: 10px; }
   .spin {
@@ -176,7 +192,8 @@
   <h1>📰 정부부처 RSS 실시간 모아보기</h1>
   <span class="sub">정책브리핑(korea.kr) 통합 RSS · 기자용 실시간 뷰어</span>
   <span class="spacer"></span>
-  <label class="muted" style="display:flex;align-items:center;gap:6px;font-size:12px;">
+  <label class="muted" style="display:flex;align-items:center;gap:6px;font-size:12px;"
+    title="켜두면 선택한 부처들을 설정한 주기(예: 5분)마다 자동으로 다시 수집합니다. 직접 수집 버튼을 누르지 않아도 됩니다. 새로 들어온 기사에는 NEW 배지가 붙습니다. (끄면 수집 버튼을 눌러야 갱신)">
     <input type="checkbox" id="autoChk" style="accent-color:var(--accent)" />
     자동 새로고침
     <select id="autoInterval" style="background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:3px 6px;">
@@ -185,6 +202,7 @@
       <option value="300" selected>5분</option>
       <option value="600">10분</option>
     </select>
+    <span class="hint" title="켜두면 설정한 주기마다 자동으로 다시 수집합니다(직접 버튼 안 눌러도 됨). 새 기사에는 NEW 배지 표시.">?</span>
   </label>
   <button class="btn" id="runBtn">🔄 수집</button>
 </header>
@@ -226,13 +244,24 @@
   </aside>
 
   <main class="main">
+    <div class="flowbar">
+      <span class="help">이용 흐름</span>
+      <span class="step">① 부처·주제 선택</span><span class="arrow">→</span>
+      <span class="step">② 🔄 수집</span><span class="arrow">→</span>
+      <span class="step">③ (선택) 자동 새로고침 ON</span><span class="arrow">→</span>
+      <span class="step">④ 결과 내 빠른 검색으로 좁히기</span><span class="arrow">→</span>
+      <span class="step">⑤ 카드 클릭 → 본문·첨부 URL 펼치기</span>
+    </div>
     <div class="toolbar">
       <span class="stat">선택 피드 <b id="selCount">0</b></span>
       <span class="stat">표시 <b id="shownCount">0</b>건</span>
       <span class="stat" id="lastRun"></span>
       <span class="spacer" style="flex:1"></span>
-      <input type="text" id="quickFilter" placeholder="결과 내 빠른 검색…"
-        style="background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 10px;width:220px;" />
+      <span class="help">결과 내 빠른 검색</span>
+      <span class="hint" title="새로 수집하지 않고, 이미 받아온 결과만 즉석에서 좁혀줍니다. 입력 즉시 제목·본문·부처명에 그 단어가 든 카드만 남고, 지우면 전체가 다시 보입니다. (좌측 '포함 키워드 필터'는 수집 단계에서 거르는 것이라 다릅니다.)">?</span>
+      <input type="text" id="quickFilter" placeholder="예: 반도체, 연금…"
+        title="이미 받아온 결과만 즉석에서 좁혀줍니다. 새로 수집하지 않습니다."
+        style="background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 10px;width:200px;" />
     </div>
     <div class="progress" id="progressWrap" style="display:none;"><div id="progressBar"></div></div>
     <div class="errors" id="errors"></div>
